@@ -73,10 +73,12 @@ RUN set -xe; \
     ca-certificates \
     git \
     lsof \
-    nodejs \
-    npm \
     procps \
     supervisor \
+    curl \
+    build-essential \
+    libssl-dev \
+    pkg-config \
     ;
 
 COPY --from=builder /usr/local/lib /usr/local/lib
@@ -91,12 +93,16 @@ RUN set -xe; \
     ldconfig; \
     chmod 755 /usr/local/bin/logprefix;
 
+RUN set -xe && \
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    . $HOME/.cargo/env && \
+    rustup update
+
 ARG NOALBS_VERSION=v2.8.0
 RUN set -xe; \
     git clone https://github.com/715209/nginx-obs-automatic-low-bitrate-switching /app; \
     cd /app; \
-    git checkout $NOALBS_VERSION; \
-    npm install fast-fuzzy node-fetch node-media-server obs-websocket-js signale string-template ws xml2js;
+    git checkout $NOALBS_VERSION;
 
 EXPOSE 5000/udp 8181/tcp 8282/udp
 
