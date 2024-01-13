@@ -98,7 +98,7 @@ RUN set -xe && \
     . $HOME/.cargo/env && \
     rustup update
 
-ARG NOALBS_VERSION=v2.8.0
+ARG NOALBS_VERSION=v2.8.1
 RUN set -xe; \
     git clone https://github.com/715209/nginx-obs-automatic-low-bitrate-switching /app; \
     cd /app; \
